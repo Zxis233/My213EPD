@@ -1,0 +1,109 @@
+#ifndef _MYCONFIG_H_
+#define _MYCONFIG_H_
+
+#include <Arduino.h>
+#include <ArduinoJson.h>
+#include <DNSServer.h>
+#include <EEPROM.h>
+#include <ESP_Seniverse.h>
+#include <GxEPD2_3C.h>
+#include <LittleFS.h>
+#include <TimeLib.h>
+#include <Timezone.h>
+#include <U8g2_for_Adafruit_GFX.h>
+#include <WiFi.h>
+#include <u8g2_fonts.h>
+
+// FreeFonts from Adafruit_GFX
+// #include <Fonts/FreeMonoBold12pt7b.h>
+// #include <Fonts/FreeMonoBold18pt7b.h>
+// #include <Fonts/FreeMonoBold24pt7b.h>
+// #include <Fonts/FreeMonoBold9pt7b.h>
+
+
+#define D4 12
+#define D5 13
+
+
+const int modePin = 8;  // 18
+const int keepPin = 1;  // 19  板载BOOT-GPIO9
+
+extern int modeNum;
+extern int changeMode;
+extern int changeKeep;
+extern int keepNum;
+extern int keepButtonCount;
+extern int keepButtonL;
+extern int modeButtonCount;
+extern int modeButtonL;
+extern boolean configMode;
+extern boolean wifiUnconfigure;
+
+//******U8G2字体设置******
+U8G2_FOR_ADAFRUIT_GFX u8g2Fonts;  // 创建U8G2对象
+
+GxEPD2_3C<GxEPD2_213_my, GxEPD2_213_my::HEIGHT> display(GxEPD2_213_my(/*CS=5*/ 7, /*DC=*/4, /*RST=*/5, /*BUSY=*/6));
+
+String ip;                      // 设备局域网IP
+DNSServer dnsServer;            // 服务器对象
+
+WeatherNow weatherNow;          // WeatherNow对象用于获取心知天气当天信息
+WeatherDaily weatherDaily;      // WeatherDaily对象用于获取心知天气3天内信息
+LifeSuggestion lifeSuggestion;  // LifeSuggestion对象用于获取心知天气生活指数
+
+
+//******屏幕自动刷新设置******
+int flashtime_0 = 90000;  // 1小时 非精确
+int flashtime_1 = 6000;   // 4分钟 非精确
+int flashtime_2 = 6000;
+
+
+//******WIFI设置******
+String ssid = "";
+String pass = "";
+
+
+//******心知天气设置******
+String authcode         = "";
+String authcode_default = "";  // 秘钥
+
+const String reqLocation = "ip";           // 所查询的位置
+const String reqLanguage = "zh-Hans";           // 语言
+const String reqUnit     = "c";                 // 单位，摄氏/华氏
+
+
+//******NTP时间设置******
+WiFiUDP Udp;
+const char ntpServerName[128] = "ntp6.aliyun.com";
+#define LOCALPORT       8000         // Local port to listen for UDP packets
+#define NTP_PACKET_SIZE 48           // NTP time stamp is in the first 48 bytes of the message
+
+byte packetBuffer[NTP_PACKET_SIZE];  // buffer to hold incoming & outgoing packets
+
+int timeZone        = 0;
+int timezone_offset = 8;             // 显示为东八区
+
+void display_str(String str, int x, int y)
+{
+    int fontspace = 16;  // 单个中文占据的宽高像素
+    Serial.println(str);
+    x -= fontspace;
+    for (int i = 0; i < str.length(); i += 3)
+    {      // 中文占3个字符
+        if (x < 122 - 25)
+        {  // 自动换行 29
+            x += fontspace;
+        }
+        else
+        {
+            y += fontspace;
+            x  = 2;
+        }
+        u8g2Fonts.setCursor(x, y);
+        u8g2Fonts.print(str.substring(i, i + 3));
+    }
+}
+
+
+
+#endif

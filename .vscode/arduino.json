@@ -1,0 +1,7 @@
+{
+    "configuration": "CDCOnBoot=default,UploadMode=cdc,PartitionScheme=huge_app,CPUFreq=160,FlashMode=dio,FlashFreq=80,FlashSize=4M,UploadSpeed=921600,DebugLevel=verbose",
+    "board": "esp32:esp32:esp32c3",
+    "sketch": "Tester.ino",
+    "output": "build",
+    "port": "COM5"
+}
