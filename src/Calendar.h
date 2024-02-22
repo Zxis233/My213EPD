@@ -39,6 +39,7 @@ void draw2in13CalendarVScreen()
     // int openIconicWeatherWidth = 60;
     // 临时变量
     char buff[100];
+    String lastupdate;
 
     // ===== 左侧日历 =====
     // 上：年、月、星期，温度、湿度，高度占比：13*3=39
@@ -95,7 +96,7 @@ void draw2in13CalendarVScreen()
     startY        += contentHeight + 3;
     // 最长的天气现象描述 "今天:雷阵雨伴有冰雹"
     u8g2Fonts.setFont(u8g2_font_wqy14_t_gb2312a);
-    sprintf(buff, "%s%s,%d~", ldayCN2[0], weatherNow.getWeatherText(), weatherDaily.getLow(0));
+    sprintf(buff, "%s%s, %d~", ldayCN2[0], weatherNow.getWeatherText(), weatherDaily.getLow(0));
     // u8g2Fonts.drawUTF8(startX, startY, buff);
     u8g2Fonts.setCursor(startX + 2, startY);
     u8g2Fonts.print(buff);
@@ -108,10 +109,14 @@ void draw2in13CalendarVScreen()
 
     // 城市
     u8g2Fonts.setFont(u8g2_font_wqy12_t_gb2312a);
-    startX += 8 * 6 + 5 + 2;
-    startY  = 13;
-    sprintf(buff, "%s", weatherNow.getCityName());
-    u8g2Fonts.drawUTF8(startX, startY, buff);
+    startX     += 8 * 6 + 5 + 2;
+    startY      = 13;
+    lastupdate  = weatherNow.getLastUpdate();
+    sprintf(buff, "%s|%s",
+            weatherNow.getCityName(),
+            lastupdate.substring(lastupdate.indexOf("T") + 1, lastupdate.indexOf("+") - 3).c_str());
+    u8g2Fonts.drawUTF8(startX + 1, startY, buff);
+
     // 温度、湿度
 
 
@@ -140,7 +145,7 @@ void draw2in13CalendarVScreen()
     u8g2Fonts.drawUTF8(startX, startY, buff);
     startY += 13;
     sprintf(buff, "%s感冒", lifeSuggestion.getFactorFlu());
-    u8g2Fonts.drawUTF8(startX, startY, buff);
+    u8g2Fonts.drawUTF8(startX, startY + 1, buff);
 
     // 天气预报 =====
     startX = 3;
@@ -247,7 +252,6 @@ void drawCalendar(int startX, int startY, int calendarWidth, int calendarHeight)
     // int currentMonthDays = 30;
 
 
-
     if (currentMonth == 2)
     {                                                     // 闰年2月和平年2月份天数不一样
         currentMonthDays = ((currentYear % 400 == 0) || (currentYear % 4 == 0 && currentYear % 100 > 0)) ? 29 : 28;
@@ -311,7 +315,7 @@ void drawCalendar(int startX, int startY, int calendarWidth, int calendarHeight)
             if (monthDay == currentMonthDay)
             {  // 当天要突出显示
                 // display.drawRect(splitWidth * j, splitHeight * (i - 1) + startY + 5, splitWidth, splitHeight - 2, display.epd2.hasColor ? GxEPD_RED : GxEPD_BLACK);
-                display.fillRect(splitWidth * j, splitHeight * (i - 1) + startY + 5, splitWidth, splitHeight - 3, display.epd2.hasColor ? GxEPD_RED : GxEPD_BLACK);
+                display.fillRect(splitWidth * j + 1, splitHeight * (i - 1) + startY + 5, splitWidth - 2, splitHeight - 3, display.epd2.hasColor ? GxEPD_RED : GxEPD_BLACK);
                 if (display.epd2.hasColor)
                 {
                     // u8g2Fonts.setForegroundColor(GxEPD_RED);

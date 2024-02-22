@@ -84,7 +84,7 @@ void cleanEEPROM()
     for (int i = 0; i < 4096; i++)
     {
         EEPROM.write(i, 0);
-        Serial.printf("EEPROM Clean: %d\r\n", i);
+        // Serial.printf("EEPROM Clean: %d\r\n", i);
     }
     EEPROM.commit();
     Serial.println("EEPROM Cleaned!");

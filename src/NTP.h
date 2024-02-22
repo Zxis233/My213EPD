@@ -1,6 +1,7 @@
 #include <WiFiUdp.h>
 
 #include "Config.h"
+extern int timeZone;
 
 // wifi连接UDP设置参数
 void sendNTPpacket(IPAddress &address);

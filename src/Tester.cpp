@@ -71,10 +71,12 @@ void setup()
         seniverse_pre();
         seniverse_update();
         display_str("正在获取心知天气信息，请稍后...", 5, 20);
-        display.nextPage();
+        // display.nextPage();
     }
 
     changeMode = 1;
+    modeNum    = 1;
+    keepNum    = 5;
 }
 
 #ifdef DEBUG
@@ -96,7 +98,7 @@ void loop()
         {
         case 0:
             draw2in13CalendarVScreen();
-            delay(10);
+            // delay(10);
 
             if (changeKeep == 1 || changeLongKeep == 1 || ticount_0 == flashtime_0)
             {
@@ -156,12 +158,6 @@ void loop()
                 display.drawInvertedBitmap(0, 0, gImage_RWqgwl, 122, 250, GxEPD_RED);
                 break;
 
-            case 5:
-                display.fillScreen(GxEPD_WHITE);
-                display.drawInvertedBitmap(0, 0, gImage_BWyy, 122, 250, GxEPD_BLACK);
-                display.drawInvertedBitmap(0, 0, gImage_RWyy, 122, 250, GxEPD_RED);
-                break;
-
             case 4:
                 display.fillScreen(GxEPD_WHITE);
                 // display.drawInvertedBitmap(13, 13, repo, 96, 96, GxEPD_BLACK);
@@ -175,6 +171,20 @@ void loop()
 
                 display.drawInvertedBitmap(0, 0, gImage_BWyy_white, 122, 250, GxEPD_BLACK);
                 display.drawInvertedBitmap(0, 0, gImage_RWyy_white, 122, 250, GxEPD_RED);
+                break;
+
+            case 5:
+                display.fillScreen(GxEPD_WHITE);
+                // display.drawInvertedBitmap(0, 0, gImage_BWyy, 122, 250, GxEPD_BLACK);
+                // display.drawInvertedBitmap(0, 0, gImage_RWyy, 122, 250, GxEPD_RED);
+                display.drawInvertedBitmap(0, 0, gImage_BWneko2, 122, 250, GxEPD_BLACK);
+                display.drawInvertedBitmap(0, 0, gImage_RWneko2, 122, 250, GxEPD_RED);
+                break;
+
+            case 6:
+                display.fillScreen(GxEPD_WHITE);
+                display.drawInvertedBitmap(0, 0, gImage_BWneko3, 122, 250, GxEPD_BLACK);
+                display.drawInvertedBitmap(0, 0, gImage_RWneko3, 122, 250, GxEPD_RED);
                 break;
 
             case 0:
@@ -240,7 +250,6 @@ void loop()
             }
 
             myDelayHibernate(ticount_2, flashtime_2, isHibernating);
-
             break;
 
         default:
@@ -249,6 +258,7 @@ void loop()
 
         if (changeMode == 1)
         {
+            seniverse_update();
             display.nextPage();
             changeMode = 0;
         }
@@ -356,6 +366,7 @@ void loop()
         keepButtonL = 0;
         keepButtonCount++;
         delay(50);
+        Serial.print(".");
     }
     else
     {
@@ -366,7 +377,7 @@ void loop()
             {
                 Serial.println("Keep Button Short");
                 Serial.printf("KeepButtonCount: %d\r\n", keepNum);
-                if (keepNum >= 5)
+                if (keepNum >= 7)
                 {
                     keepNum    = 0;
                     changeKeep = 1;

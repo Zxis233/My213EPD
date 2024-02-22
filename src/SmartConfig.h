@@ -186,8 +186,16 @@ boolean checkConnection()
 }
 
 
-void SmartConfig()                                 // 微信配网是通过SmartConfig方法来实现的
+void SmartConfig()  // 微信配网是通过SmartConfig方法来实现的
 {
+    EEPROM.begin(4096);
+    for (int i = 0; i < 4096; i++)
+    {
+        EEPROM.write(i, 0);
+        // Serial.printf("EEPROM Clean: %d\r\n", i);
+    }
+    EEPROM.commit();
+    Serial.println("EEPROM Cleaned!");
     WiFi.mode(WIFI_AP_STA);
     WiFi.beginSmartConfig();                       // 开始SmartConfig，等待手机端发出用户名和密码
     Serial.println("Waiting for Smartconfig...");  // 打印log信息
