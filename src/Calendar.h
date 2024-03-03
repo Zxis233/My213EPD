@@ -10,7 +10,7 @@ extern WeatherDaily weatherDaily;      // WeatherDaily对象用于获取心知�
 extern LifeSuggestion lifeSuggestion;  // LifeSuggestion对象用于获取心知天气生活指数
 
 
-void draw2in13CalendarVScreen()
+void IRAM_ATTR draw2in13CalendarVScreen()
 {
     display.setFullWindow();
     display.fillScreen(GxEPD_WHITE);  // 清屏成白色

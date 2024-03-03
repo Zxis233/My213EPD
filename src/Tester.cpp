@@ -10,6 +10,9 @@
 #include "SmartConfig.h"
 #include "myString.h"
 
+// 计时器
+hw_timer_t *Timer0_Cfg = NULL;
+
 
 int modeNum         = 0;
 int changeMode      = 0;
@@ -42,7 +45,7 @@ extern WeatherNow weatherNow;          // WeatherNow对象用于获取心知天�
 extern WeatherDaily weatherDaily;      // WeatherDaily对象用于获取心知天气3天内信息
 extern LifeSuggestion lifeSuggestion;  // LifeSuggestion对象用于获取心知天气生活指数
 extern boolean offline_mode;
-
+// #define cleanROM
 void setup()
 {
     pinMode(D4, OUTPUT);
@@ -76,7 +79,7 @@ void setup()
 
     changeMode = 1;
     modeNum    = 1;
-    keepNum    = 5;
+    // keepNum    = 5;
 }
 
 #ifdef DEBUG
@@ -154,23 +157,25 @@ void loop()
 
             case 3:
                 display.fillScreen(GxEPD_WHITE);
-                display.drawInvertedBitmap(0, 0, gImage_BWqgwl, 122, 250, GxEPD_BLACK);
-                display.drawInvertedBitmap(0, 0, gImage_RWqgwl, 122, 250, GxEPD_RED);
+                // display.drawInvertedBitmap(0, 0, gImage_BWqgwl, 122, 250, GxEPD_BLACK);
+                // display.drawInvertedBitmap(0, 0, gImage_RWqgwl, 122, 250, GxEPD_RED);
+                display.drawInvertedBitmap(0,0,gImage_BWxjtu,122,250,GxEPD_BLACK);
+                display.drawInvertedBitmap(0,0,gImage_RWxjtu,122,250,GxEPD_RED);
                 break;
 
             case 4:
                 display.fillScreen(GxEPD_WHITE);
-                // display.drawInvertedBitmap(13, 13, repo, 96, 96, GxEPD_BLACK);
-                // u8g2Fonts.setCursor(20, 140);
-                // u8g2Fonts.setFont(u8g2_font_wqy16_t_gb2312a);
-                // u8g2Fonts.setForegroundColor(GxEPD_RED);
-                // u8g2Fonts.print("扫描二维码");
-                // u8g2Fonts.setCursor(12, 160);
-                // u8g2Fonts.print("获取更多信息");
-                // u8g2Fonts.setForegroundColor(GxEPD_BLACK);
+                display.drawInvertedBitmap(13, 13, repo, 96, 96, GxEPD_BLACK);
+                u8g2Fonts.setCursor(20, 140);
+                u8g2Fonts.setFont(u8g2_font_wqy16_t_gb2312a);
+                u8g2Fonts.setForegroundColor(GxEPD_RED);
+                u8g2Fonts.print("扫描二维码");
+                u8g2Fonts.setCursor(12, 160);
+                u8g2Fonts.print("获取更多信息");
+                u8g2Fonts.setForegroundColor(GxEPD_BLACK);
 
-                display.drawInvertedBitmap(0, 0, gImage_BWyy_white, 122, 250, GxEPD_BLACK);
-                display.drawInvertedBitmap(0, 0, gImage_RWyy_white, 122, 250, GxEPD_RED);
+                // display.drawInvertedBitmap(0, 0, gImage_BWyy_white, 122, 250, GxEPD_BLACK);
+                // display.drawInvertedBitmap(0, 0, gImage_RWyy_white, 122, 250, GxEPD_RED);
                 break;
 
             case 5:
@@ -179,6 +184,7 @@ void loop()
                 // display.drawInvertedBitmap(0, 0, gImage_RWyy, 122, 250, GxEPD_RED);
                 display.drawInvertedBitmap(0, 0, gImage_BWneko2, 122, 250, GxEPD_BLACK);
                 display.drawInvertedBitmap(0, 0, gImage_RWneko2, 122, 250, GxEPD_RED);
+
                 break;
 
             case 6:
@@ -189,8 +195,10 @@ void loop()
 
             case 0:
                 display.fillScreen(GxEPD_WHITE);
-                display.drawInvertedBitmap(0, 0, KFC_BW, 122, 250, GxEPD_BLACK);
-                display.drawInvertedBitmap(0, 0, KFC_R, 122, 250, GxEPD_RED);
+                // display.drawInvertedBitmap(0, 0, KFC_BW, 122, 250, GxEPD_BLACK);
+                // display.drawInvertedBitmap(0, 0, KFC_R, 122, 250, GxEPD_RED);
+                display.drawInvertedBitmap(0, 0, gImage_BWana, 122, 250, GxEPD_BLACK);
+                display.drawInvertedBitmap(0, 0, gImage_RWana, 122, 250, GxEPD_RED);
                 break;
 
 
@@ -314,6 +322,7 @@ void loop()
         modeButtonL = 0;
         modeButtonCount++;
         delay(50);
+        Serial.print(".");
     }
     else
     {

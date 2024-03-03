@@ -31,7 +31,7 @@ void seniverse_pre()
     lifeSuggestion.config(authcode, reqLocation, reqLanguage, reqUnit);
 }
 
-void seniverse_update()
+void IRAM_ATTR seniverse_update()
 {
     // 更新当天天气信息
     weatherNow.update();
@@ -116,6 +116,26 @@ void myDelayHibernate(int &countTime, int &hibernateTime, bool &isHibernating, i
     //     }
     // }
     // countTime++;
+    if (isHibernating == false)
+    {
+        if (countTime == hibernateTime)
+        {
+            Serial.println("Hibernating");
+            display.hibernate();
+            isHibernating = true;
+        }
+        else
+        {
+            countTime++;
+            // Serial.println(countTime);
+        }
+    }
+    delay(delayTime);
+}
+
+
+void IRAM_ATTR myTimerHibernate(int &countTime, int &hibernateTime, bool &isHibernating, int delayTime = 10)
+{
     if (isHibernating == false)
     {
         if (countTime == hibernateTime)

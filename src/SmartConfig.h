@@ -279,5 +279,11 @@ void wifi_init()
             return;
         }
     }
+
+    EEPROM.begin(4096);
+    if (EEPROM.read(4064) == 'S')
+    {
+        return;
+    }
     wifiUnconfigure = true;
 }
